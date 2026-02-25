@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS mysql_auth_backend;
+
+USE mysql_auth_backend;
+
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
