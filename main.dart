@@ -3,7 +3,7 @@ import 'login_page.dart';
 import 'register_page.dart';
 import 'forgot_password_page.dart';
 import 'dashboard_page.dart';
-
+import 'settings_page.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
