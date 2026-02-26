@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'settings_page.dart'; // Make sure this file exists
 
 class Dashboard extends StatefulWidget {
   final String email;
@@ -139,7 +140,8 @@ class _DashboardState extends State<Dashboard> {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 4),
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(246, 255, 255, 255)),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(246, 255, 255, 255)),
                           onPressed: () async {
                             TimeOfDay? picked = await showTimePicker(
                               context: context,
@@ -220,23 +222,40 @@ class _DashboardState extends State<Dashboard> {
                   bottomRight: Radius.circular(30),
                 ),
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    "Hello, ${widget.email} 👋",
-                    style: const TextStyle(
-                        fontSize: 22,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Hello, ${widget.email} 👋",
+                        style: const TextStyle(
+                            fontSize: 22,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        getTodayDate(),
+                        style: const TextStyle(color: Colors.white70),
+                      ),
+                    ],
                   ),
-                  Text(
-                    getTodayDate(),
-                    style: const TextStyle(color: Colors.white70),
-                  ),
+                  IconButton(
+                    icon: const Icon(Icons.settings, color: Colors.black),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => SettingsPage(email: widget.email),
+                        ),
+                      );
+                    },
+                  )
                 ],
               ),
             ),
+
             const SizedBox(height: 20),
 
             // OVERVIEW
@@ -246,17 +265,13 @@ class _DashboardState extends State<Dashboard> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
-                boxShadow: const [
-                  BoxShadow(color: Colors.black12, blurRadius: 8)
-                ],
+                boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text("Today's Overview",
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  Text(getTodayDate()),
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -304,6 +319,7 @@ class _DashboardState extends State<Dashboard> {
                 ],
               ),
             ),
+
             const SizedBox(height: 20),
 
             // MEDICINES LIST
@@ -318,15 +334,12 @@ class _DashboardState extends State<Dashboard> {
                       var med = entry.value;
 
                       return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 12),
+                        margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(color: Colors.black12, blurRadius: 8)
-                          ],
+                          boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 8)],
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -336,19 +349,13 @@ class _DashboardState extends State<Dashboard> {
                               children: [
                                 Text(
                                   med["name"],
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                                 ),
                                 Row(
                                   children: [
                                     IconButton(
                                       icon: const Icon(Icons.edit, color: Colors.blue),
-                                      onPressed: () => showMedicineDialog(
-                                        medicine: med,
-                                        index: index,
-                                      ),
+                                      onPressed: () => showMedicineDialog(medicine: med, index: index),
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.delete, color: Colors.red),
@@ -365,13 +372,10 @@ class _DashboardState extends State<Dashboard> {
                             const SizedBox(height: 6),
                             Text("${med["dosage"]} • ${med["frequency"]}"),
                             const SizedBox(height: 8),
-
-                            // ================= PER DOSE UI =================
                             Column(
                               children: (med["times"] as List).asMap().entries.map((entry) {
                                 int idx = entry.key;
                                 var dose = entry.value;
-
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(vertical: 4),
                                   child: Row(
@@ -425,17 +429,14 @@ class _DashboardState extends State<Dashboard> {
 
             const SizedBox(height: 20),
 
-            // ================= QUICK ACTIONS =================
+            // QUICK ACTIONS
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   "Quick Actions",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
             ),
